@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class RestaurantApplication {
-	@Bean
-	public ModelMapper modelMapper() {
+    @Bean
+    ModelMapper modelMapper() {
 		return  new ModelMapper();
 	}
 	public static void main(String[] args) {
