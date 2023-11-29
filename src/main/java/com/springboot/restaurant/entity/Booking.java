@@ -18,9 +18,10 @@ import lombok.Setter;
 @Setter
 @Getter
 public class Booking {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long bookingId;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
@@ -33,9 +34,10 @@ public class Booking {
 	@ManyToOne
 	@JoinColumn(name = "meal_type_id")
 	private MealType mealType;
-
+	
 	private Date date;
 	private int numberOfPersons;
 	private boolean canceled;
 
+	
 }

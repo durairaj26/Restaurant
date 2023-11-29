@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-
 @Entity
 @Table(name = "users")
 @Data
@@ -19,5 +18,5 @@ public class User {
 
 	private String userName;
 	private String role;
-	
-	}
+
+}

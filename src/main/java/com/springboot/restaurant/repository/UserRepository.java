@@ -8,6 +8,4 @@ import com.springboot.restaurant.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>{
 
-	String findByRole(String role);
-
 }
