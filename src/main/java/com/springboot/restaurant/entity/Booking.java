@@ -2,6 +2,8 @@ package com.springboot.restaurant.entity;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,7 +20,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class Booking {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long bookingId;
@@ -34,10 +36,11 @@ public class Booking {
 	@ManyToOne
 	@JoinColumn(name = "meal_type_id")
 	private MealType mealType;
-	
+
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date date;
+
 	private int numberOfPersons;
 	private boolean canceled;
 
-	
 }

@@ -17,10 +17,10 @@ public class AdminService {
 
     @Autowired
     TableRepository tableRepository;
-    
+
     @Autowired
     MealTypeRepository mealTypeRepository;
-    
+
     @Autowired
     ModelMapper modelMapper;
 
