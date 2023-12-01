@@ -18,6 +18,7 @@ import com.springboot.restaurant.vo.TableVO;
 @RestController
 @RequestMapping(path="/admin", produces= {"application/json"}, consumes= {"application/json"})
 public class AdminController {
+
     @Autowired
     AdminService adminService;
 

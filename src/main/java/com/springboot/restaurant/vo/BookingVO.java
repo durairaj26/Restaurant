@@ -14,7 +14,6 @@ public class BookingVO {
 	private String tableName;
 	private String mealTypeName;
 
-	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date date;
 
 	private int numberOfPersons;

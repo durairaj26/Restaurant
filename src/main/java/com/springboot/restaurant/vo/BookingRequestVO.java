@@ -1,14 +1,12 @@
 package com.springboot.restaurant.vo;
 
-import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
-public class AvailabilityRequestVO {
+@Getter
+public class BookingRequestVO {
+	private String date;
 	private String mealTypeName;
-	private Date date;
-	
 
 }

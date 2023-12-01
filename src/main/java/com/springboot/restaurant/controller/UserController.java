@@ -1,7 +1,6 @@
 package com.springboot.restaurant.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.restaurant.service.UserService;
-import com.springboot.restaurant.vo.AvailabilityRequestVO;
+import com.springboot.restaurant.vo.BookingRequestVO;
 import com.springboot.restaurant.vo.BookingVO;
+import com.springboot.restaurant.vo.TableAvailabilityVO;
 
 @RestController
 @RequestMapping(path = "/user")
@@ -35,11 +35,19 @@ public class UserController {
 		BookingVO bookedTable = userService.bookTable(userId, bookingVO);
 		return ResponseEntity.status(HttpStatus.CREATED).body(bookedTable);
 	}
-	
-	@PostMapping("/checkAvailability")
-    public ResponseEntity<Map<String, Integer>> checkAvailability(@RequestBody AvailabilityRequestVO request,
-                                                                  @RequestHeader("userId") Long userId) {
-        Map<String, Integer> availabilityMap = userService.checkAvailability(userId, request);
-        return ResponseEntity.ok(availabilityMap);
+
+//	@PostMapping("/checkAvailability")
+//    public ResponseEntity<Map<String, Integer>> checkAvailability(@RequestBody AvailabilityRequestVO request,
+//                                                                  @RequestHeader("userId") Long userId) {
+//        Map<String, Integer> availabilityMap = userService.checkAvailability(userId, request);
+//        return ResponseEntity.ok(availabilityMap);
+//    }
+	@PostMapping("/booking/availableseats")
+    public ResponseEntity<List<TableAvailabilityVO>> getAvailableSeats(
+            @RequestBody BookingRequestVO bookingRequest) {
+        List<TableAvailabilityVO> availableSeats = userService.getAvailableSeats(bookingRequest);
+        return ResponseEntity.ok(availableSeats);
     }
+
+
 }

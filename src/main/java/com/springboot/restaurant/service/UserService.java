@@ -1,7 +1,7 @@
 package com.springboot.restaurant.service;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -16,9 +16,9 @@ import com.springboot.restaurant.repository.BookingRepository;
 import com.springboot.restaurant.repository.MealTypeRepository;
 import com.springboot.restaurant.repository.TableRepository;
 import com.springboot.restaurant.repository.UserRepository;
-import com.springboot.restaurant.vo.AvailabilityRequestVO;
-import com.springboot.restaurant.vo.AvailabilityResponseVO;
+import com.springboot.restaurant.vo.BookingRequestVO;
 import com.springboot.restaurant.vo.BookingVO;
+import com.springboot.restaurant.vo.TableAvailabilityVO;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -63,14 +63,13 @@ public class UserService {
 		return modelMapper.map(savedBooking, BookingVO.class);
 	}
 
-	public Map<String, Integer> checkAvailability(Long userId, AvailabilityRequestVO request) {
-		BookingVO mealType=bookingRepository.findByMealTypeName(request.getMealTypeName()).orElseThrow(()->new RuntimeException("MealType not found"));
-		BookingVO datecheck=bookingRepository.findByDate(request.getDate()).orElseThrow(()-> new RuntimeException("Date not found"));
-		AvailabilityResponseVO availabilityResponseVO=modelMapper.map(request, AvailabilityResponseVO.class);
-		availabilityResponseVO.setTableName(datecheck.getTableName());
-		availabilityResponseVO.setAvailableSeats();
-		
-		return null;
+	public List<TableAvailabilityVO> getAvailableSeats(BookingRequestVO bookingRequest) {
+	    LocalDate userDate = LocalDate.parse(bookingRequest.getDate());
+	    String mealTypeName = bookingRequest.getMealTypeName();
+
+	    List<TableAvailabilityVO> availableSeats = bookingRepository.getAvailableSeats(userDate.atStartOfDay(), mealTypeName);
+	    return availableSeats;
 	}
-	 
+
+
 }
