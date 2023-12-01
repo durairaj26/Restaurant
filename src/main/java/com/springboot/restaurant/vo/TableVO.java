@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 public class TableVO {
 	private Long tableId;
-    private String tableName;
-    private int seatingCapacity;
+	private String tableName;
+	private int seatingCapacity;
 
 }

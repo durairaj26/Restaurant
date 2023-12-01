@@ -36,18 +36,10 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(bookedTable);
 	}
 
-//	@PostMapping("/checkAvailability")
-//    public ResponseEntity<Map<String, Integer>> checkAvailability(@RequestBody AvailabilityRequestVO request,
-//                                                                  @RequestHeader("userId") Long userId) {
-//        Map<String, Integer> availabilityMap = userService.checkAvailability(userId, request);
-//        return ResponseEntity.ok(availabilityMap);
-//    }
 	@PostMapping("/booking/availableseats")
-    public ResponseEntity<List<TableAvailabilityVO>> getAvailableSeats(
-            @RequestBody BookingRequestVO bookingRequest) {
-        List<TableAvailabilityVO> availableSeats = userService.getAvailableSeats(bookingRequest);
-        return ResponseEntity.ok(availableSeats);
-    }
-
+	public ResponseEntity<List<TableAvailabilityVO>> getAvailableSeats(@RequestBody BookingRequestVO bookingRequest) {
+		List<TableAvailabilityVO> availableSeats = userService.getAvailableSeats(bookingRequest);
+		return ResponseEntity.ok(availableSeats);
+	}
 
 }

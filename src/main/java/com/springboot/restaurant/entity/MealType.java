@@ -11,16 +11,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name="meal_type")
+@Table(name = "meal_type")
 @Data
 @Setter
 @Getter
 public class MealType {
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long mealTypeId;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long mealTypeId;
 
 	@Column(name = "meal_type_name")
-    private String mealTypeName;
+	private String mealTypeName;
 
 }

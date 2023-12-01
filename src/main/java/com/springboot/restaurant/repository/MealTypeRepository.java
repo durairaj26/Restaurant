@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import com.springboot.restaurant.entity.MealType;
 
 @Repository
-public interface MealTypeRepository extends JpaRepository<MealType, Long>{
+public interface MealTypeRepository extends JpaRepository<MealType, Long> {
 	Optional<MealType> findByMealTypeName(String mealTypeName);
 }

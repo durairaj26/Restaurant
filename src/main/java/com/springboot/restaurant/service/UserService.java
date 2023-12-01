@@ -64,12 +64,15 @@ public class UserService {
 	}
 
 	public List<TableAvailabilityVO> getAvailableSeats(BookingRequestVO bookingRequest) {
-	    LocalDate userDate = LocalDate.parse(bookingRequest.getDate());
-	    String mealTypeName = bookingRequest.getMealTypeName();
+		LocalDate userDate = LocalDate.parse(bookingRequest.getDate());
+		String mealTypeName = bookingRequest.getMealTypeName();
 
-	    List<TableAvailabilityVO> availableSeats = bookingRepository.getAvailableSeats(userDate.atStartOfDay(), mealTypeName);
-	    return availableSeats;
+		List<Object[]> result = bookingRepository.getAvailableSeats(userDate.atStartOfDay(), mealTypeName);
+
+		List<TableAvailabilityVO> availableSeats = result.stream().map(row -> new TableAvailabilityVO((String) row[0],
+				((Number) row[1]).intValue(), ((Number) row[2]).intValue())).collect(Collectors.toList());
+
+		return availableSeats;
 	}
-
 
 }

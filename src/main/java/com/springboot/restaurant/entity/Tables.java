@@ -16,11 +16,10 @@ import lombok.Setter;
 public class Tables {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long tableId;
 
 	private String tableName;
 	private int seatingCapacity;
-
 
 }

@@ -7,6 +7,6 @@ import lombok.Setter;
 @Getter
 public class MealTypeVO {
 
-    private String mealTypeName;
+	private String mealTypeName;
 
 }

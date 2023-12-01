@@ -15,39 +15,38 @@ import com.springboot.restaurant.vo.TableVO;
 @Service
 public class AdminService {
 
-    @Autowired
-    TableRepository tableRepository;
+	@Autowired
+	TableRepository tableRepository;
 
-    @Autowired
-    MealTypeRepository mealTypeRepository;
+	@Autowired
+	MealTypeRepository mealTypeRepository;
 
-    @Autowired
-    ModelMapper modelMapper;
+	@Autowired
+	ModelMapper modelMapper;
 
-    public TableVO addTable(TableVO tableVO) {
-        Tables tables = modelMapper.map(tableVO, Tables.class);
-        tableRepository.save(tables);
-        return  modelMapper.map(tables, TableVO.class);
-    }
+	public TableVO addTable(TableVO tableVO) {
+		Tables tables = modelMapper.map(tableVO, Tables.class);
+		tableRepository.save(tables);
+		return modelMapper.map(tables, TableVO.class);
+	}
 
 	public TableVO updateTable(TableVO tableVO, Long tableId) {
 		Tables updateTable = tableRepository.findById(tableId)
 				.orElseThrow(() -> new RuntimeException("Table not found"));
-		modelMapper.map(tableVO,updateTable);
+		modelMapper.map(tableVO, updateTable);
 		tableRepository.save(updateTable);
-		return  modelMapper.map(updateTable, TableVO.class);
+		return modelMapper.map(updateTable, TableVO.class);
 	}
 
 	public void deleteTable(TableVO tableVO) {
 		Tables tableToDelete = modelMapper.map(tableVO, Tables.class);
-	    tableRepository.findById(tableToDelete.getTableId())
-	                   .orElseThrow(() -> new RuntimeException("Table not found"));
-	    tableRepository.deleteById(tableToDelete.getTableId());
+		tableRepository.findById(tableToDelete.getTableId()).orElseThrow(() -> new RuntimeException("Table not found"));
+		tableRepository.deleteById(tableToDelete.getTableId());
 
 	}
 
 	public MealTypeVO addMeal(MealTypeVO mealTypeVO) {
-		MealType mealType=modelMapper.map(mealTypeVO, MealType.class);
+		MealType mealType = modelMapper.map(mealTypeVO, MealType.class);
 		mealTypeRepository.save(mealType);
 		return modelMapper.map(mealType, MealTypeVO.class);
 	}
