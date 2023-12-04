@@ -8,10 +8,12 @@ import lombok.Setter;
 public class TableAvailabilityVO {
 	private String tableName;
 	private int availableSeats;
+	private String availableStatus;
 
-	public TableAvailabilityVO(String tableName, int seatingCapacity, int availableSeats) {
+	public TableAvailabilityVO(String tableName, int availableSeats, String isAvailable) {
 		this.tableName = tableName;
 		this.availableSeats = availableSeats;
+		this.availableStatus = isAvailable;
 	}
 
 	public TableAvailabilityVO() {

@@ -1,6 +1,6 @@
 package com.springboot.restaurant.vo;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,12 +8,11 @@ import lombok.Setter;
 @Setter
 @Getter
 public class BookingVO {
+	private Long bookingId;
 	private String userName;
 	private String tableName;
 	private String mealTypeName;
-
-	private Date date;
-
+	private LocalDate date;
 	private int numberOfPersons;
 	private boolean canceled;
 }

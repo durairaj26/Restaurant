@@ -24,18 +24,24 @@ public class UserController {
 	@Autowired
 	UserService userService;
 
+	// List all booking based on user by userId
+	
 	@GetMapping("/booking/listall")
 	public ResponseEntity<List<BookingVO>> listBooking(@RequestHeader("userId") Long userId) {
 		List<BookingVO> listBookingVO = userService.listBooking(userId);
 		return ResponseEntity.ok(listBookingVO);
 	}
 
+	// Book table by user details
+	
 	@PostMapping("/booking/booktable")
 	public ResponseEntity<BookingVO> bookTable(@RequestHeader("userId") Long userId, @RequestBody BookingVO bookingVO) {
 		BookingVO bookedTable = userService.bookTable(userId, bookingVO);
 		return ResponseEntity.status(HttpStatus.CREATED).body(bookedTable);
 	}
 
+	// Check available seats with table name
+	
 	@PostMapping("/booking/availableseats")
 	public ResponseEntity<List<TableAvailabilityVO>> getAvailableSeats(@RequestBody BookingRequestVO bookingRequest) {
 		List<TableAvailabilityVO> availableSeats = userService.getAvailableSeats(bookingRequest);

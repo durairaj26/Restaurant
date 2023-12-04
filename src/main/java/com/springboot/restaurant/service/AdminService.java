@@ -24,26 +24,33 @@ public class AdminService {
 	@Autowired
 	ModelMapper modelMapper;
 
+	// Create table
+
 	public TableVO addTable(TableVO tableVO) {
 		Tables tables = modelMapper.map(tableVO, Tables.class);
 		tableRepository.save(tables);
 		return modelMapper.map(tables, TableVO.class);
 	}
 
+	// Update table by table id
+
 	public TableVO updateTable(TableVO tableVO, Long tableId) {
-		Tables updateTable = tableRepository.findById(tableId)
-				.orElseThrow(() -> new RuntimeException("Table not found"));
-		modelMapper.map(tableVO, updateTable);
+		Tables updateTable = modelMapper.map(tableVO, Tables.class);
+		tableRepository.findById(tableId).orElseThrow(() -> new RuntimeException("Table not found"));
 		tableRepository.save(updateTable);
 		return modelMapper.map(updateTable, TableVO.class);
 	}
 
+	// Delete table by table id
+	
 	public void deleteTable(TableVO tableVO) {
 		Tables tableToDelete = modelMapper.map(tableVO, Tables.class);
 		tableRepository.findById(tableToDelete.getTableId()).orElseThrow(() -> new RuntimeException("Table not found"));
 		tableRepository.deleteById(tableToDelete.getTableId());
 
 	}
+
+	// Create mealType
 
 	public MealTypeVO addMeal(MealTypeVO mealTypeVO) {
 		MealType mealType = modelMapper.map(mealTypeVO, MealType.class);

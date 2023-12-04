@@ -22,26 +22,34 @@ public class AdminController {
 	@Autowired
 	AdminService adminService;
 
+	// Create table
+	
 	@PostMapping("/table/create")
 	public ResponseEntity<TableVO> addTable(@RequestBody TableVO tableVO) {
 		TableVO createdTableVO = adminService.addTable(tableVO);
 		return ResponseEntity.status(HttpStatus.CREATED).body(createdTableVO);
 	}
 
+	// Update table by table id
+	
 	@PutMapping("/table/update/{tableId}")
 	public ResponseEntity<TableVO> updateTable(@RequestBody TableVO tableVO, @PathVariable Long tableId) {
 		TableVO updateTableVO = adminService.updateTable(tableVO, tableId);
 		return ResponseEntity.status(HttpStatus.OK).body(updateTableVO);
 	}
 
+	// Delete table by table id
+	
 	@DeleteMapping("/table/delete/{tableId}")
-	public String deleteTable(@PathVariable Long tableId) {
+	public ResponseEntity<String> deleteTable(@PathVariable Long tableId) {
 		TableVO tableVO = new TableVO();
 		tableVO.setTableId(tableId);
 		adminService.deleteTable(tableVO);
-		return "Deleted successfully";
+		return new ResponseEntity<>("Table deleted successfully", HttpStatus.OK);
 	}
 
+	// Create mealType
+	
 	@PostMapping("/meal/create")
 	public ResponseEntity<MealTypeVO> addMeal(@RequestBody MealTypeVO mealTypeVO) {
 		MealTypeVO CreateMealTypeVO = adminService.addMeal(mealTypeVO);
