@@ -23,7 +23,7 @@ public class AdminController {
 	AdminService adminService;
 
 	// Create table
-	
+
 	@PostMapping("/table/create")
 	public ResponseEntity<TableVO> addTable(@RequestBody TableVO tableVO) {
 		TableVO createdTableVO = adminService.addTable(tableVO);
@@ -31,7 +31,7 @@ public class AdminController {
 	}
 
 	// Update table by table id
-	
+
 	@PutMapping("/table/update/{tableId}")
 	public ResponseEntity<TableVO> updateTable(@RequestBody TableVO tableVO, @PathVariable Long tableId) {
 		TableVO updateTableVO = adminService.updateTable(tableVO, tableId);
@@ -39,7 +39,7 @@ public class AdminController {
 	}
 
 	// Delete table by table id
-	
+
 	@DeleteMapping("/table/delete/{tableId}")
 	public ResponseEntity<String> deleteTable(@PathVariable Long tableId) {
 		TableVO tableVO = new TableVO();
@@ -49,7 +49,7 @@ public class AdminController {
 	}
 
 	// Create mealType
-	
+
 	@PostMapping("/meal/create")
 	public ResponseEntity<MealTypeVO> addMeal(@RequestBody MealTypeVO mealTypeVO) {
 		MealTypeVO CreateMealTypeVO = adminService.addMeal(mealTypeVO);

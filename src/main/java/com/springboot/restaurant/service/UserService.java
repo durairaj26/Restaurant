@@ -80,8 +80,8 @@ public class UserService {
 		return modelMapper.map(bookingRepository.save(newBooking), BookingVO.class);
 	}
 
-	//Check available seats by table name this function used for booking table
-	
+	// Check available seats by table name this function used for booking table
+
 	public int getAvailableSeatsByTableName(LocalDate userDate, String mealTypeName, String tableName) {
 		List<Object[]> result = bookingRepository.getAvailableSeatsByTableName(userDate, mealTypeName, tableName);
 
@@ -104,6 +104,23 @@ public class UserService {
 			String isAvailable = availableSeats > 0 ? "Available" : "Not Available";
 			return new TableAvailabilityVO(tableName, availableSeats, isAvailable);
 		}).collect(Collectors.toList());
+	}
+
+	// Cancel booking
+
+	public void cancelBooking(Long userId, Long bookingId) {
+		Booking booking = bookingRepository.findByBookingIdAndUserUserId(bookingId, userId)
+				.orElseThrow(() -> new EntityNotFoundException("Booking not found"));
+
+		if (booking.isCanceled()) {
+			return;
+		}
+		BookingVO bookingVO = modelMapper.map(booking, BookingVO.class);
+
+		bookingVO.setCanceled(true);
+		modelMapper.map(bookingVO, booking);
+
+		bookingRepository.save(booking);
 	}
 
 }

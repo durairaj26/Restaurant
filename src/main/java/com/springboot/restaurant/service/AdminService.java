@@ -42,7 +42,7 @@ public class AdminService {
 	}
 
 	// Delete table by table id
-	
+
 	public void deleteTable(TableVO tableVO) {
 		Tables tableToDelete = modelMapper.map(tableVO, Tables.class);
 		tableRepository.findById(tableToDelete.getTableId()).orElseThrow(() -> new RuntimeException("Table not found"));

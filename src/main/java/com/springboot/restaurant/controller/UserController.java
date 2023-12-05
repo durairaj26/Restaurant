@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -18,14 +19,14 @@ import com.springboot.restaurant.vo.BookingVO;
 import com.springboot.restaurant.vo.TableAvailabilityVO;
 
 @RestController
-@RequestMapping(path = "/user")
+@RequestMapping(path = "/user", produces = { "application/json" }, consumes = { "application/json" })
 public class UserController {
 
 	@Autowired
 	UserService userService;
 
 	// List all booking based on user by userId
-	
+
 	@GetMapping("/booking/listall")
 	public ResponseEntity<List<BookingVO>> listBooking(@RequestHeader("userId") Long userId) {
 		List<BookingVO> listBookingVO = userService.listBooking(userId);
@@ -33,7 +34,7 @@ public class UserController {
 	}
 
 	// Book table by user details
-	
+
 	@PostMapping("/booking/booktable")
 	public ResponseEntity<BookingVO> bookTable(@RequestHeader("userId") Long userId, @RequestBody BookingVO bookingVO) {
 		BookingVO bookedTable = userService.bookTable(userId, bookingVO);
@@ -41,11 +42,20 @@ public class UserController {
 	}
 
 	// Check available seats with table name
-	
+
 	@PostMapping("/booking/availableseats")
 	public ResponseEntity<List<TableAvailabilityVO>> getAvailableSeats(@RequestBody BookingRequestVO bookingRequest) {
 		List<TableAvailabilityVO> availableSeats = userService.getAvailableSeats(bookingRequest);
 		return ResponseEntity.ok(availableSeats);
+	}
+
+	// Cancel booking
+
+	@PostMapping("/cancelBooking/{bookingId}")
+	public ResponseEntity<String> cancelBooking(@RequestHeader Long userId, @PathVariable Long bookingId) {
+		userService.cancelBooking(userId, bookingId);
+		return new ResponseEntity<>("Booking successfully Canceled!", HttpStatus.OK);
+
 	}
 
 }
