@@ -38,4 +38,8 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
 	Optional<Booking> findByBookingIdAndUserUserId(Long bookingId, Long userId);
 
+	// Add extra persons
+
+	int findAvailableSeatByBookingIdAndDateAndMealTypeMealTypeId(@Param("bookingId") Long bookingId);
+
 }

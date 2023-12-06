@@ -59,6 +59,10 @@ public class UserService {
 		User user = userRepository.findById(userId)
 				.orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
 
+		if (bookingVO.getDate().isBefore(LocalDate.now())) {
+			throw new IllegalArgumentException("Booking for past dates is not allowed.");
+		}
+
 		if (bookingVO.getNumberOfPersons() <= 0) {
 			throw new IllegalArgumentException("Number of persons must be greater than 0.");
 		}
@@ -121,6 +125,20 @@ public class UserService {
 		modelMapper.map(bookingVO, booking);
 
 		bookingRepository.save(booking);
+	}
+
+	// Add extra persons
+
+	public BookingVO addPersons(BookingVO bookingVO, Long userId, Long bookingId) {
+		Booking booking = bookingRepository.findByBookingIdAndUserUserId(bookingId, userId)
+				.orElseThrow(() -> new EntityNotFoundException("Booking id with user id not found"));
+
+		if (bookingVO.getNumberOfPersons() <= 0) {
+			throw new IllegalArgumentException("Number of persons must be greater than 0.");
+		}
+
+		int availableSeats = bookingRepository.findAvailableSeatByBookingIdAndDateAndMealTypeMealTypeId(bookingId);
+		return null;
 	}
 
 }

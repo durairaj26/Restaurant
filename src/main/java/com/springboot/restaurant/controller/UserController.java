@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,6 +57,16 @@ public class UserController {
 		userService.cancelBooking(userId, bookingId);
 		return new ResponseEntity<>("Booking successfully Canceled!", HttpStatus.OK);
 
+	}
+
+	// Add extra persons
+
+	@PutMapping("/booking/addPerson/{bookingId}")
+	public ResponseEntity<BookingVO> addPersons(@RequestBody BookingVO bookingVO, @RequestHeader Long userId,
+			@PathVariable Long bookingId) {
+
+		BookingVO addedPersons = userService.addPersons(bookingVO, userId, bookingId);
+		return ResponseEntity.status(HttpStatus.OK).body(addedPersons);
 	}
 
 }
