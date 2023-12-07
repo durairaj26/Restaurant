@@ -87,10 +87,8 @@ public class UserService {
 	// Check available seats by table name this function used for booking table
 
 	public int getAvailableSeatsByTableName(LocalDate userDate, String mealTypeName, String tableName) {
-		List<Object[]> result = bookingRepository.getAvailableSeatsByTableName(userDate, mealTypeName, tableName);
-
-		return result.stream().filter(row -> tableName.equals(row[0])).findFirst()
-				.map(row -> ((Number) row[1]).intValue())
+		return bookingRepository.getAvailableSeatsByTableName(userDate, mealTypeName, tableName).stream()
+				.filter(row -> tableName.equals(row[0])).findFirst().map(row -> ((Number) row[1]).intValue())
 				.orElseThrow(() -> new RuntimeException("Table not found: " + tableName));
 	}
 
@@ -100,9 +98,7 @@ public class UserService {
 		LocalDate userDate = LocalDate.parse(bookingRequest.getDate());
 		String mealTypeName = bookingRequest.getMealTypeName();
 
-		List<Object[]> result = bookingRepository.getAvailableSeats(userDate, mealTypeName);
-
-		return result.stream().map(row -> {
+		return bookingRepository.getAvailableSeats(userDate, mealTypeName).stream().map(row -> {
 			String tableName = (String) row[0];
 			int availableSeats = ((Number) row[2]).intValue();
 			String isAvailable = availableSeats > 0 ? "Available" : "Not Available";
@@ -113,32 +109,33 @@ public class UserService {
 	// Cancel booking
 
 	public void cancelBooking(Long userId, Long bookingId) {
-		Booking booking = bookingRepository.findByBookingIdAndUserUserId(bookingId, userId)
-				.orElseThrow(() -> new EntityNotFoundException("Booking not found"));
-
-		if (booking.isCanceled()) {
-			return;
-		}
-		BookingVO bookingVO = modelMapper.map(booking, BookingVO.class);
-
-		bookingVO.setCanceled(true);
-		modelMapper.map(bookingVO, booking);
-
-		bookingRepository.save(booking);
+		bookingRepository.findByBookingIdAndUserUserId(bookingId, userId).filter(booking -> !booking.isCanceled())
+				.ifPresent(booking -> {
+					BookingVO bookingVO = modelMapper.map(booking, BookingVO.class);
+					bookingVO.setCanceled(true);
+					modelMapper.map(bookingVO, booking);
+					bookingRepository.save(booking);
+				});
 	}
 
 	// Add extra persons
 
 	public BookingVO addPersons(BookingVO bookingVO, Long userId, Long bookingId) {
-		Booking booking = bookingRepository.findByBookingIdAndUserUserId(bookingId, userId)
-				.orElseThrow(() -> new EntityNotFoundException("Booking id with user id not found"));
+		return bookingRepository.findByBookingIdAndUserUserId(bookingId, userId).map(booking -> {
+			if (bookingVO.getNumberOfPersons() <= 0) {
+				throw new IllegalArgumentException("Number of persons must be greater than 0.");
+			}
 
-		if (bookingVO.getNumberOfPersons() <= 0) {
-			throw new IllegalArgumentException("Number of persons must be greater than 0.");
-		}
+			int availableSeats = bookingRepository.findAvailableSeatByBookingIdAndDateAndMealTypeMealTypeId(bookingId);
 
-		int availableSeats = bookingRepository.findAvailableSeatByBookingIdAndDateAndMealTypeMealTypeId(bookingId);
-		return null;
+			if (availableSeats < bookingVO.getNumberOfPersons()) {
+				throw new IllegalStateException("Not enough available seats for booking.");
+			}
+
+			booking.setNumberOfPersons(booking.getNumberOfPersons()+bookingVO.getNumberOfPersons());
+
+			return modelMapper.map(bookingRepository.save(booking), BookingVO.class);
+		}).orElseThrow(() -> new EntityNotFoundException("Booking id with user id not found"));
 	}
 
 }

@@ -3,6 +3,8 @@ package com.springboot.restaurant.vo;
 import lombok.Getter;
 import lombok.Setter;
 
+// Handle response for check seat availability 
+
 @Setter
 @Getter
 public class TableAvailabilityVO {

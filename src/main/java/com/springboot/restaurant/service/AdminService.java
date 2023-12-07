@@ -36,7 +36,7 @@ public class AdminService {
 
 	public TableVO updateTable(TableVO tableVO, Long tableId) {
 		Tables updateTable = modelMapper.map(tableVO, Tables.class);
-		tableRepository.findById(tableId).orElseThrow(() -> new RuntimeException("Table not found"));
+		tableRepository.findById(updateTable.getTableId()).orElseThrow(() -> new RuntimeException("Table not found"));
 		tableRepository.save(updateTable);
 		return modelMapper.map(updateTable, TableVO.class);
 	}
