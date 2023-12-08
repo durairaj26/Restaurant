@@ -42,7 +42,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 	
 	@Query("SELECT t.seatingCapacity - COALESCE(SUM(b.numberOfPersons), 0) " + "FROM Tables t "
 			+ "LEFT JOIN Booking b ON t.id = b.table.id " + "WHERE (b.date, b.mealType.id, t.id) IN ("
-			+ "SELECT b.date, b.mealType.id, b.table.id " + "FROM Booking b " + "WHERE b.id = :bookingId AND b.canceled = false"
+			+ "SELECT b.date, b.mealType.id, b.table.id " + "FROM Booking b " + "WHERE b.id = :bookingId"
 			+ ") " + "GROUP BY t.id, t.seatingCapacity")
 	int findAvailableSeatByBookingIdAndDateAndMealTypeMealTypeId(@Param("bookingId") Long bookingId);
 

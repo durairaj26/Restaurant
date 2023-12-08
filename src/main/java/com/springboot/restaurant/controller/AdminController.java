@@ -42,9 +42,7 @@ public class AdminController {
 
 	@DeleteMapping("/table/delete/{tableId}")
 	public ResponseEntity<String> deleteTable(@PathVariable Long tableId) {
-		TableVO tableVO = new TableVO();
-		tableVO.setTableId(tableId);
-		adminService.deleteTable(tableVO);
+		adminService.deleteTable(tableId);
 		return new ResponseEntity<>("Table deleted successfully", HttpStatus.OK);
 	}
 
