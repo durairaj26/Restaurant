@@ -43,6 +43,9 @@ public class UserService {
 	// List all booking based on user by userId
 
 	public List<BookingVO> listBooking(Long userId) {
+		userRepository.findById(userId).filter(user -> "USER".equals(user.getRole())).orElseThrow(
+				() -> new EntityNotFoundException("User not found or role is not USER for userId: " + userId));
+
 		return bookingRepository.findByUserUserId(userId).stream()
 				.map(booking -> modelMapper.map(booking, BookingVO.class)).collect(Collectors.toList());
 	}
@@ -58,6 +61,9 @@ public class UserService {
 
 		User user = userRepository.findById(userId)
 				.orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
+
+		userRepository.findById(userId).filter(users -> "USER".equals(users.getRole())).orElseThrow(
+				() -> new EntityNotFoundException("User not found or role is not USER for userId: " + userId));
 
 		if (bookingVO.getDate().isBefore(LocalDate.now())) {
 			throw new IllegalArgumentException(bookingVO.getDate() + " Booking for past dates is not allowed.");
@@ -131,15 +137,15 @@ public class UserService {
 	public BookingVO addPersons(BookingVO bookingVO, Long userId, Long bookingId) {
 		return bookingRepository.findByBookingIdAndUserUserId(bookingId, userId).map(booking -> {
 			if (booking.isCanceled()) {
-				throw new IllegalArgumentException("Booking was Canceled in this booking id: "+booking.getBookingId());
+				throw new IllegalArgumentException(
+						"Booking was Canceled in this booking id: " + booking.getBookingId());
 			}
-			
+
 			if (bookingVO.getNumberOfPersons() <= 0) {
 				throw new IllegalArgumentException("Number of persons must be greater than 0.");
 			}
 
 			int availableSeats = bookingRepository.findAvailableSeatByBookingIdAndDateAndMealTypeMealTypeId(bookingId);
-			System.out.println("seat: "+availableSeats);
 			if (availableSeats < bookingVO.getNumberOfPersons()) {
 				throw new IllegalArgumentException("Not enough available seats for booking.");
 			}
